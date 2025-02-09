@@ -1,16 +1,31 @@
-import { UserService } from '../services/user.service.js';
 import { WS_EVENTS } from '../config/constants.js';
 import WebSocket from 'ws';
 
 export class WebsocketController {
-  constructor(wss) {
+  constructor(wss, userService) {
     this.wss = wss;
-    this.userService = new UserService();
+    this.userService = userService;
     this.initialize();
   }
 
   initialize() {
-    this.wss.on(WS_EVENTS.CONNECTION, (ws) => this.handleConnection(ws));
+    this.wss.on(WS_EVENTS.CONNECTION, (ws) => {
+      this.handleConnection(ws);
+      this.setupPingPong(ws);
+    });
+  }
+
+  setupPingPong(ws) {
+    ws.isAlive = true;
+    ws.on('pong', () => ws.isAlive = true);
+    
+    const interval = setInterval(() => {
+      if (!ws.isAlive) return ws.terminate();
+      ws.isAlive = false;
+      ws.ping();
+    }, 30_000);
+
+    ws.on('close', () => clearInterval(interval));
   }
 
   handleConnection(ws) {
@@ -42,7 +57,17 @@ export class WebsocketController {
       const data = JSON.parse(message);
       console.log('Message reçu :', data);
 
+      if (!data.type) {
+        console.error('Message type is missing');
+        return;
+      }
+      
       switch (data.type) {
+        case 'register':
+          if (!data.userId || !data.nickname) {
+            console.error('User ID or nickname is missing');
+            return;
+          }
         case 'register':
           this.userService.addUser(data.userId, ws, data.nickname);
           this.broadcastUserList();
@@ -79,4 +104,5 @@ export class WebsocketController {
       }
     });
   }
+
 }

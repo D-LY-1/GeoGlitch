@@ -1,0 +1,62 @@
+1 / 2
+Projet : Application Web de Suivi en Temps Réel et
+Visioconférence
+Objectif du Projet
+Développer une application web où les utilisateurs peuvent partager leur position en temps réel à l'aide du
+GPS de leur navigateur et participer à une visioconférence. L'application affichera les positions des
+utilisateurs sur une carte et mettra à jour ces positions en temps réel. Les utilisateurs pourront également
+voir les données de leurs accéléromètres s'ils sont disponibles.
+Fonctionnalités à Implémenter
+-. Partage de position en temps réel :
+Utiliser l'API de géolocalisation du navigateur pour obtenir la position actuelle de l'utilisateur.
+Mettre à jour et envoyer la position de l'utilisateur au serveur à intervalles réguliers.
+Afficher les positions des utilisateurs sur une carte Google Maps.
+/. Visioconférence :
+Utiliser WebRTC pour établir une connexion de visioconférence entre les utilisateurs.
+Afficher le flux vidéo de l'utilisateur local et celui des autres utilisateurs connectés.
+0. Utilisation de l'accéléromètre :
+Utiliser l'API des capteurs pour récupérer les données de l'accéléromètre du navigateur (si
+disponible).
+Envoyer ces données au serveur et les afficher sur l'interface utilisateur.
+Étapes du Projet
+-. Préparer l'environnement :
+Installer Node.js et Express.js pour créer le serveur.
+Installer le module WebSocket pour la communication en temps réel.
+/. Créer le serveur WebSocket et API RESTful :
+Créer une API RESTful pour gérer les utilisateurs et leurs positions.
+Créer un serveur WebSocket pour gérer les connexions en temps réel et diffuser les mises à
+jour de position à tous les clients connectés.
+0. Développer l'interface utilisateur :
+Créer une interface web avec une carte Google Maps pour afficher les positions des
+utilisateurs.
+Intégrer la géolocalisation du navigateur pour récupérer et envoyer la position de l'utilisateur.
+Ajouter une section pour la visioconférence en utilisant WebRTC.
+Afficher les données de l'accéléromètre de l'utilisateur sur l'interface.
+2 / 2
+1. Tester l'application :
+Lancer le serveur et ouvrir l'application web dans un navigateur.
+Vérifier que les positions des utilisateurs sont mises à jour en temps réel sur la carte.
+Tester la connexion de visioconférence entre plusieurs utilisateurs.
+Vérifier l'affichage des données de l'accéléromètre.
+3. Héberger le projet :
+Utiliser le serveur VPS mis à votre disposition pour héberger le projet.
+Configurer le serveur pour qu'il soit accessible depuis l'extérieur.
+Déployer l'application sur le serveur VPS et s'assurer qu'elle fonctionne correctement en
+production.
+Consignes et Suggestions
+Documentation : Utilisez la documentation officielle pour Google Maps, WebRTC, et les API de
+géolocalisation et de capteurs du navigateur.
+Modularité : Organisez votre code de manière modulaire pour faciliter la maintenance et l'extension
+de l'application.
+Sécurité : Assurez-vous que la transmission des données sensibles, telles que la position GPS, est
+sécurisée. Utilisez HTTPS pour chiffrer les communications.
+Interface utilisateur : Concevez une interface utilisateur intuitive et réactive. Assurez-vous que
+l'application fonctionne bien sur différents appareils, y compris les smartphones et les tablettes.
+Hébergement : Assurez-vous que le serveur VPS est correctement configuré et sécurisé pour
+l'hébergement de l'application. Vérifiez les logs du serveur pour diagnostiquer et résoudre les
+problèmes éventuels.
+Livrables
+Code source complet de l'application (serveur et client).
+Documentation du projet expliquant la structure du code, les technologies utilisées et les étapes pour
+exécuter l'application.
+Une démonstration fonctionnelle de l'application hébergée sur le serveur VPS.
