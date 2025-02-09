@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Suivi en Temps Réel - Application Web</title>
+    <meta name="description" content="Application de suivi en temps réel avec géolocalisation et visioconférence">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' https://unpkg.com https://cdn.skypack.dev 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https://unpkg.com https://*.tile.openstreetmap.org data:;
+        connect-src 'self';
+      "
+    />
+  
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     
+    <link rel="stylesheet" href="./css/style.css">
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     
+    <script type="module" src="./js/app.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <h1>Suivi en Temps Réel</h1>
+        <p class="user-id">Votre ID : <span id="userId"></span></p>
+        <p class="nickname">Votre nickname : <span id="nickname"></span></p>
+    </header>
+
+    <main class="app-container">
+        <!-- Section Carte -->
+        <section class="map-section">
+            <h2>Carte des Utilisateurs</h2>
+            <div id="map" class="map-container"></div>
+        </section>
+
+        <!-- Section Utilisateurs Connectés -->
+        <section class="users-section">
+            <h2>Utilisateurs Connectés</h2>
+            <ul id="usersList" class="users-list"></ul>
+        </section>
+    </main>
+</body>
+</html>
