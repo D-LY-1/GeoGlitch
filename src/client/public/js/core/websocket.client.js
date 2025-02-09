@@ -1,4 +1,5 @@
 import { updateActiveUsersList } from "../ui/activeUsers.js";
+import { updateCurrentUser } from "../ui/currentUser.js";
 
 export class WebsocketClient {
   constructor(mapManager) {
@@ -27,8 +28,7 @@ export class WebsocketClient {
     this.nickname = prompt('Entrez votre pseudonyme:') || 
                    `User_${Math.random().toString(36).substr(2, 5)}`;
     
-    document.getElementById('userId').textContent = this.userId;
-    document.getElementById('nickname').textContent = this.nickname;
+    updateCurrentUser(this.userId, this.nickname);
   }
 
   registerUser() {
