@@ -15,6 +15,5 @@ new WebsocketController(wss, userService);
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  // console.log(`WebSocket server listening on ws://localhost:${PORT}`);
-  console.log(`WebSocket server listening on ws://https://damien.leroy.caen.mds-project.fr:${PORT}`);
+  console.log(`WebSocket server listening on wss://damien.leroy.caen.mds-project.fr`);
 });

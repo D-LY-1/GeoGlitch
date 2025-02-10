@@ -23,7 +23,7 @@ class App {
    */
   async initialize() {
     await this.mapManager.initMap();
-    this.wsClient.connect('ws://damien.leroy.caen.mds-project.fr:3000');
+    this.wsClient.connect('wss://damien.leroy.caen.mds-project.fr');
     this.setupGeolocation();
   }
 
