@@ -74,6 +74,11 @@ export class WebsocketController {
           break;
         case 'positionUpdate':
           this.userService.updatePosition(data.userId, data.position);
+          this.broadcast({
+            type: 'positionUpdate',
+            userId: data.userId,
+            position: data.position
+          });
           this.broadcastUserList();
           break;
       }
@@ -84,7 +89,7 @@ export class WebsocketController {
 
   broadcastUserList() {
     const users = this.userService.getActiveUsers().map(user => ({
-      id: user.id,
+      userId: user.userId,
       nickname: user.nickname,
       position: user.position,
       connected: user.connected

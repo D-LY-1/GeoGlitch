@@ -53,7 +53,12 @@ export class WebsocketClient {
           updateCurrentUser(this.userId, this.nickname);
           break;
         case 'userUpdate':
-          updateActiveUsersList(this.userId);
+          updateActiveUsersList(message.users);
+          message.users.forEach(user => {
+            if (user.position) {
+              window.app.mapManager.updateUserMarker(user.userId, user.position);
+            }
+          });
           break;
         case 'positionUpdate':
           if (message.userId !== this.userId) {

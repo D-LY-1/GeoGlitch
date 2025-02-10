@@ -13,7 +13,7 @@ class App {
 
   async initialize() {
     await this.mapManager.initMap();
-    this.wsClient.connect();
+    this.wsClient.connect('ws://localhost:3000');
     this.setupGeolocation();
   }
 
@@ -46,7 +46,6 @@ class App {
       accuracy: position.coords.accuracy,
     };
     this.wsClient.sendPosition(pos);
-    console.log("AAA")
     if (!this.wsClient.userId) {
       console.warn("UserId non défini, mise à jour de la position ignorée");
       return;

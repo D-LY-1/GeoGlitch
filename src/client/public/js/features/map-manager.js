@@ -28,23 +28,25 @@ export class MapManager {
     this.updateMarker(userId, position);
   }
 
-  updateMarker(userId, position) {
+  async updateMarker(userId, position) {
     if (this.markers.has(userId)) {
       this.markers.get(userId).setLatLng(position);
     } else {
-      const user = getActiveUsers(userId);
-      if (!user) return;
-
+      const users = await getActiveUsers();
+      const userObj = users.find(user => user.userId === userId);
+      if (!userObj) return;
+    
       const marker = L.marker(position)
         .addTo(this.map)
         .bindPopup(`
-          <b>${user.nickname}</b><br>
+          <b>${userObj.nickname}</b><br>
           ID: ${userId}
         `)
         .on('click', () => {
           this.map.setView(position, this.map.getZoom());
         });
-
+  
+      console.log("*************** this.markers: ",this.markers)
       this.markers.set(userId, marker);
     }
   }
