@@ -1,14 +1,17 @@
-import {MapManager} from './features/map-manager.js';
-import {WebsocketClient} from './core/websocket.client.js';
+import { MapManager } from './features/map-manager.js';
+import { WebsocketClient } from './core/websocket.client.js';
+import { WebRTCService} from './core/webrtc.service.js'
 
 class App {
   constructor() {
     this.userId = this.generateUserId();
     this.mapManager = new MapManager();
-    this.wsClient = new WebsocketClient(this.mapManager);
+    this.wsClient = new WebsocketClient(this.mapManager);    
+    this.webRTCService = new WebRTCService(this.wsClient);
     this.retryCount = 0;
     this.maxRetries = 3;
     this.initialize();
+    this.setupUIListeners();
   }
 
   generateUserId() {
@@ -31,6 +34,18 @@ class App {
     }
   }
 
+  async initializeWebRTC() {
+    await this.webRTCService.init();
+    
+    document.getElementById('toggleVideo').addEventListener('click', () => {
+        this.webRTCService.toggleVideo();
+    });
+    
+    document.getElementById('toggleAudio').addEventListener('click', () => {
+        this.webRTCService.toggleAudio();
+    });
+}
+
   setupGeolocation() {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
@@ -49,6 +64,13 @@ class App {
     };
     this.wsClient.sendPosition(pos);
     this.mapManager.updateUserMarker(this.userId, pos);
+  }
+
+  setupUIListeners() {
+    document.getElementById('joinConference').addEventListener('click', () => {
+      this.initializeWebRTC();
+      document.getElementById('joinConference').disabled = true;
+    });
   }
 }
 

@@ -1,6 +1,6 @@
 import { getActiveUsers } from '../services/user.api.js';
 
-export async function updateActiveUsersList() {
+export async function updateActiveUsersList(currentUserId) {
   try {
     const users = await getActiveUsers();
     const usersListEl = document.getElementById('usersList');
@@ -10,9 +10,13 @@ export async function updateActiveUsersList() {
       const li = document.createElement('li');
       li.textContent = `${user.nickname} (${user.position ? `${user.position.lat.toFixed(4)}, ${user.position.lng.toFixed(4)}` : 'Position inconnue'})`;
       li.style.cursor = 'pointer';
+      
       li.addEventListener('click', () => {
-        console.log(`Clic sur ${user.nickname}`);
+        if (currentUserId !== user.id) {
+          window.app.webRTCService.createOffer(user.id);
+        }
       });
+
       usersListEl.appendChild(li);
     });
   } catch (error) {

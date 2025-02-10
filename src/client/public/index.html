@@ -39,6 +39,7 @@
     </header>
 
     <main class="app-container">
+      <div id="row-1">
         <!-- Section Carte -->
         <section class="map-section">
             <h2>Carte des Utilisateurs</h2>
@@ -50,6 +51,23 @@
             <h2>Utilisateurs Connectés</h2>
             <ul id="usersList" class="users-list"></ul>
         </section>
+      </div>
+
+      <div id="row-2">
+        <!-- Section Visioconférence -->
+        <section class="conference-section">
+          <h2>Visioconférence <span id="participantCount">(0 connectés)</span></h2>
+          <button id="joinConference">Rejoindre la visioconférence</button>
+          <div class="video-container">
+            <video id="localVideo" autoplay muted playsinline></video>
+            <div id="remoteVideos"></div>
+          </div>
+          <div class="media-controls">
+            <button id="toggleVideo">Activer/Désactiver la caméra</button>
+            <button id="toggleAudio">Activer/Désactiver le micro</button>
+          </div>
+        </section>
+      </div>
     </main>
 </body>
 </html>

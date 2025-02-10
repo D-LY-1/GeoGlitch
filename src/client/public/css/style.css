@@ -33,11 +33,16 @@ body {
 /* Main container */
 .app-container {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+#row-1{
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
 }
 
 /* Section: Map */

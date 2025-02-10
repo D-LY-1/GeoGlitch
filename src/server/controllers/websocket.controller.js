@@ -77,6 +77,11 @@ export class WebsocketController {
           this.userService.updatePosition(data.userId, data.position);
           this.broadcastUserList();
           break;
+        case 'offer':
+        case 'answer':
+        case 'iceCandidate':
+          this.routeWebRTCMessage(ws, data);
+          break;
       }
     } catch (error) {
       console.error('Erreur lors du traitement du message :', error);
@@ -105,4 +110,13 @@ export class WebsocketController {
     });
   }
 
+  routeWebRTCMessage(ws, message) {
+    const targetUser = this.userService.users.get(message.targetUserId);
+    if (targetUser && targetUser.ws.readyState === WebSocket.OPEN) {
+        targetUser.ws.send(JSON.stringify({
+            ...message,
+            senderUserId: this.findUserIdByWs(ws)
+        }));
+    }
+  }
 }
