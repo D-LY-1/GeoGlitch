@@ -12,9 +12,7 @@ export async function updateActiveUsersList(currentUserId) {
       li.style.cursor = 'pointer';
       
       li.addEventListener('click', () => {
-        if (currentUserId !== user.id) {
-          window.app.webRTCService.createOffer(user.id);
-        }
+        window.app.mapManager.focusOnUser(user.userId);
       });
 
       usersListEl.appendChild(li);

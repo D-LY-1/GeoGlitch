@@ -4,34 +4,17 @@ import { WebRTCService} from './core/webrtc.service.js'
 
 class App {
   constructor() {
-    this.userId = this.generateUserId();
     this.mapManager = new MapManager();
     this.wsClient = new WebsocketClient(this.mapManager);    
     this.webRTCService = new WebRTCService(this.wsClient);
-    this.retryCount = 0;
-    this.maxRetries = 3;
     this.initialize();
     this.setupUIListeners();
   }
 
-  generateUserId() {
-    return Math.random().toString(36).substr(2, 9);
-  }
-
   async initialize() {
-    try {
-      await this.mapManager.initMap();
-      this.wsClient.connect();
-      this.setupGeolocation();
-    } catch (error) {
-      if (this.retryCount < this.maxRetries) {
-        this.retryCount++;
-        console.log(`Tentative ${this.retryCount}/${this.maxRetries}`);
-        setTimeout(() => this.initialize(), 1000 * this.retryCount);
-      } else {
-        console.error('Échec après plusieurs tentatives:', error);
-      }
-    }
+    await this.mapManager.initMap();
+    this.wsClient.connect();
+    this.setupGeolocation();
   }
 
   async initializeWebRTC() {
@@ -63,7 +46,12 @@ class App {
       accuracy: position.coords.accuracy,
     };
     this.wsClient.sendPosition(pos);
-    this.mapManager.updateUserMarker(this.userId, pos);
+    console.log("AAA")
+    if (!this.wsClient.userId) {
+      console.warn("UserId non défini, mise à jour de la position ignorée");
+      return;
+    }
+    this.mapManager.updateUserMarker(this.wsClient.userId, pos);
   }
 
   setupUIListeners() {
@@ -74,4 +62,4 @@ class App {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => new App());
+document.addEventListener('DOMContentLoaded', () => window.app = new App());

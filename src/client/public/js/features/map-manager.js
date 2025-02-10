@@ -57,6 +57,9 @@ export class MapManager {
   }
 
   focusOnUser(userId) {
+    console.log(userId)
+    console.log(this.markers)
+
     if (this.markers.has(userId)) {
       const marker = this.markers.get(userId);
       this.map.setView(marker.getLatLng(), this.map.getZoom());

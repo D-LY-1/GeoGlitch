@@ -64,23 +64,17 @@ export class WebsocketController {
       
       switch (data.type) {
         case 'register':
-          if (!data.userId || !data.nickname) {
-            console.error('User ID or nickname is missing');
+          if (!data.nickname) {
+            console.error('Nickname is missing');
             return;
           }
-        case 'register':
-          this.userService.addUser(data.userId, ws, data.nickname);
+          const userId = this.userService.addUser(ws, data.nickname);
+          ws.send(JSON.stringify({ type: 'registered', userId }));
           this.broadcastUserList();
           break;
-          
         case 'positionUpdate':
           this.userService.updatePosition(data.userId, data.position);
           this.broadcastUserList();
-          break;
-        case 'offer':
-        case 'answer':
-        case 'iceCandidate':
-          this.routeWebRTCMessage(ws, data);
           break;
       }
     } catch (error) {
@@ -108,15 +102,5 @@ export class WebsocketController {
         client.send(JSON.stringify(message));
       }
     });
-  }
-
-  routeWebRTCMessage(ws, message) {
-    const targetUser = this.userService.users.get(message.targetUserId);
-    if (targetUser && targetUser.ws.readyState === WebSocket.OPEN) {
-        targetUser.ws.send(JSON.stringify({
-            ...message,
-            senderUserId: this.findUserIdByWs(ws)
-        }));
-    }
   }
 }

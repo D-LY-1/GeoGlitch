@@ -1,3 +1,5 @@
+import { randomUUID } from 'crypto';
+
 export class UserService {
   static #instance = null;
 
@@ -16,10 +18,11 @@ export class UserService {
     return UserService.#instance;
   }
 
-  addUser(userId, ws, nickname) {
+  addUser(ws, nickname) {
     if (this.nicknames.has(nickname)) {
       throw new Error('Nickname already taken');
     }
+    const userId = randomUUID();
     
     this.users.set(userId, {
       ws,
@@ -30,16 +33,17 @@ export class UserService {
     });
     
     this.nicknames.add(nickname);
+    return userId;
   }
 
   getActiveUsers() {
-    return Array.from(this.users.entries()).map(([id, user]) => ({
-      id,
+    return Array.from(this.users.entries()).map(([userId, user]) => ({
+      userId,
       nickname: user.nickname,
-      position: user.position,
-      connected: user.connected
+      position: user.position
     }));
   }
+
 
   updatePosition(userId, position) {
     const user = this.users.get(userId);

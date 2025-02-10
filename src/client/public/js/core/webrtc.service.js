@@ -77,7 +77,7 @@ export class WebRTCService {
 
   updateParticipantCount(change){
     this.participantCount += change;
-    updateParticipantCountInterface(change);
+    updateParticipantCountInterface(this.participantCount);
   }
 
   async createOffer(targetUserId) {

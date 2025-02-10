@@ -5,7 +5,7 @@ export class WebsocketClient {
   constructor(mapManager, webRTCService) {
     this.mapManager = mapManager;
     this.webRTCService = webRTCService;
-    this.userId = crypto.randomUUID();
+    this.userId = null;
     this.nickname = null;
   }
 
@@ -32,7 +32,6 @@ export class WebsocketClient {
   registerUser() {
     this.send({
       type: 'register',
-      userId: this.userId,
       nickname: this.nickname
     });
   }
@@ -49,33 +48,18 @@ export class WebsocketClient {
     try {
       const message = JSON.parse(data);
       switch (message.type) {
+        case 'registered':
+          this.userId = message.userId;
+          updateCurrentUser(this.userId, this.nickname);
+          break;
         case 'userUpdate':
           updateActiveUsersList(this.userId);
-          if (this.webRTCService?.participantCount > 0) {
-            message.users.forEach(user => {
-              if (user.id !== this.userId && 
-                  !this.webRTCService.peerConnections.has(user.id) &&
-                  this.webRTCService.localStream
-              ) {
-                this.webRTCService.createOffer(user.id);
-              }
-            });
-          }
           break;
         case 'positionUpdate':
           if (message.userId !== this.userId) {
             this.mapManager.updateUserMarker(message.userId, message.position);
           }
           break;
-        case 'offer':
-            this.webRTCService.handleOffer(message.senderUserId, message.offer);
-            break;
-        case 'answer':
-            this.webRTCService.handleAnswer(message.senderUserId, message.answer);
-            break;
-        case 'iceCandidate':
-            this.webRTCService.handleIceCandidate(message.senderUserId, message.candidate);
-            break;
       }
     } catch (error) {
       console.error('Error handling message:', error);
