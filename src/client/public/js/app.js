@@ -69,8 +69,6 @@ class App {
       accuracy: position.coords.accuracy,
     };
     this.wsClient.sendPosition(pos);
-    console.log("wsclient:");
-    console.log(this.wsClient);
     if (!this.wsClient.userId) {
       console.warn("UserId not defined, position update ignored");
       return;

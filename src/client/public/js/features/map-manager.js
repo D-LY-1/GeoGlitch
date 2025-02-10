@@ -63,7 +63,6 @@ export class MapManager {
           this.map.setView(position, this.map.getZoom());
         });
 
-      console.log("Current markers map:", this.markers);
       this.markers.set(userId, marker);
     }
   }
@@ -85,9 +84,6 @@ export class MapManager {
    * @param {string} userId - The identifier of the user.
    */
   focusOnUser(userId) {
-    console.log("Focusing on user:", userId);
-    console.log("Markers map:", this.markers);
-
     if (this.markers.has(userId)) {
       const marker = this.markers.get(userId);
       this.map.setView(marker.getLatLng(), this.map.getZoom());
