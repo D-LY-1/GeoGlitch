@@ -10,7 +10,7 @@ class App {
    */
   constructor() {
     this.mapManager = new MapManager();
-    this.wsClient = new WebsocketClient(this.mapManager);
+    this.wsClient = new WebsocketClient(this.mapManager, undefined, () => this.setupGeolocation());
     this.webRTCService = new WebRTCService(this.wsClient);
     this.initialize();
     this.setupUIListeners();
@@ -69,6 +69,8 @@ class App {
       accuracy: position.coords.accuracy,
     };
     this.wsClient.sendPosition(pos);
+    console.log("wsclient:");
+    console.log(this.wsClient);
     if (!this.wsClient.userId) {
       console.warn("UserId not defined, position update ignored");
       return;

@@ -7,11 +7,12 @@ export class WebsocketClient {
    * @param {MapManager} mapManager - The MapManager instance for updating map markers.
    * @param {WebRTCService} webRTCService - The WebRTCService instance for handling media streams.
    */
-  constructor(mapManager, webRTCService) {
+  constructor(mapManager, webRTCService, onRegistered) {
     this.mapManager = mapManager;
     this.webRTCService = webRTCService;
     this.userId = null; // Will be set upon registration
     this.nickname = null;
+    this.onRegistered = onRegistered;
   }
 
   /**
@@ -75,14 +76,13 @@ export class WebsocketClient {
       const message = JSON.parse(data);
       switch (message.type) {
         case 'registered':
-          // Set the userId as provided by the server upon successful registration.
-          console.log("---> registered: ", message.userId);
           this.userId = message.userId;
           updateCurrentUser(this.userId, this.nickname);
+          if (this.onRegistered) {
+            this.onRegistered();
+          }
           break;
         case 'userUpdate':
-          // Update the active users list and update markers for those with a known position.
-          console.log("---> userUpdate: ", message.users);
           updateActiveUsersList(message.users);
           message.users.forEach(user => {
             if (user.position) {
@@ -91,9 +91,7 @@ export class WebsocketClient {
           });
           break;
         case 'positionUpdate':
-          // Update the marker for another user when a position update is received.
           if (message.userId !== this.userId) {
-            console.log("1 ---> positionUpdate: ", message.userId);
             this.mapManager.updateUserMarker(message.userId, message.position);
           }
           break;
