@@ -1,5 +1,13 @@
 import { getActiveUsers } from '../services/user.api.js';
 
+/**
+ * Updates the active users list in the UI.
+ * It fetches the list of active users from the API, clears the current list,
+ * then creates a list item for each user. Each item displays the user's nickname
+ * and position (if available) and sets up a click handler to focus the map on that user.
+ *
+ * @param {string} currentUserId - The current user's ID (unused in this implementation).
+ */
 export async function updateActiveUsersList(currentUserId) {
   try {
     const users = await getActiveUsers();
@@ -18,6 +26,6 @@ export async function updateActiveUsersList(currentUserId) {
       usersListEl.appendChild(li);
     });
   } catch (error) {
-    console.error('Erreur lors de la mise à jour de la liste des utilisateurs:', error);
+    console.error('Error updating active users list:', error);
   }
 }
